@@ -1,0 +1,38 @@
+{
+  "name": "visbo-connect",
+  "version": "0.0.1",
+  "description": "VISBO application to start excel addins on Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": "",
+  "keywords": [
+    "Electron",
+    "win32",
+    "VISBO"
+  ],
+  "author": "UliP",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^19.0.2",
+    "electron-builder": "^23.0.3"
+  },
+  "build": {
+    "appId": "visbo.visbo-connect",
+    "protocols": {
+      "name": "visbo-connect",
+      "schemes": [
+        "visbo-connect"
+      ]
+    },
+    "win": {
+      "icon": "Visbo.ico"
+    }
+  },
+  "dependencies": {
+    "log4js": "^6.5.2"
+  }
+}
