@@ -9,7 +9,7 @@ const parameters = ['C:\\Visbo\\Software\\Projectboard.xlsx'];
 // logger initialize
 var log4js = require("log4js");
 log4js.configure({
-	appenders: { everything: { type: "file", filename: "C:\\GitHub\\electron-deep-linking-mac-win\\mydebug.log" } },
+	appenders: { everything: { type: "file", filename: "C:\\GitHub\\visbo-connect\\mydebug.log" } },
 	categories: { default: { appenders: ["everything"], level: "debug" } }
   });
 const logger = log4js.getLogger();
@@ -62,10 +62,10 @@ function mainProgram() {
 	if (argv[1] === undefined) {
 		// This an installation call
 		logEverywhere('called for installation')
-		if (!app.isDefaultProtocolClient('visbo-predict')) {
+		if (!app.isDefaultProtocolClient('visbo-connect')) {
 			// Define custom protocol handler. Deep linking works on packaged versions of the application!
 			logEverywhere(' ----------------- define protocol handler --------------- ')
-			app.setAsDefaultProtocolClient('visbo-predict')
+			app.setAsDefaultProtocolClient('visbo-connect')
 		  }
 	}
 	else {
@@ -90,6 +90,6 @@ function mainProgram() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 // REWORK use => function
-logEverywhere(' ----------------- wait for app.on ready --------------- ')
+logEverywhere(' ----------------- wait for app.on ready NEW --------------- ')
 app.on('ready', mainProgram)
 
