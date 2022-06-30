@@ -21,39 +21,31 @@ function logEverywhere(s) {
 }
 
 // ---------------- FUNCTIONS ----------------
-// start an external program with parameters
-function startExternalProgram (executablePath, parameters) {
-	logEverywhere ('--- START PROGRAM ---')
-	logEverywhere ('parameters = ' + parameters)
-    child(executablePath, parameters);
-    logEverywhere('program finished = ')
-}
 
-// make paramter usage for simple edit
+// make parameter usage for simple edit
 function getParameter (myParameter) {
 	if (myParameter === undefined) {return undefined}
-  	logEverywhere ('myParameter = ' + myParameter)
+
+	// only the parameters after the ? are important for SPE
 	const afterQuestionMarkString = myParameter.split("?")[1];
 	logEverywhere ("afterQuestionMarkStringRight =  " + afterQuestionMarkString)
 
 	// rework code (special for spe)
-	parameterForExcelAddin = '/"' + afterQuestionMarkString + '"'
-  	// cleanString = parameterForExcelAddin.replace (/\&/g, "ZZZ")
-	cleanString = parameterForExcelAddin
-	logEverywhere ( 'return for excel = ' + cleanString)
-	return (cleanString)
+	parameterForExcelAddin = '/e/"' + afterQuestionMarkString + '"'
+	return (parameterForExcelAddin)
 }
 
-// Start Program with parameter received from the web
+// Start Program with parameters received from the web
 function startExternalProgramWithParameters (parameterValue) {
-		logEverywhere ('parameterValue = ' + parameterValue)
 		let speParameter = getParameter(parameterValue)
 		logEverywhere ('speParameter = ' + speParameter)
-
 		parameters.push(speParameter)
-		startExternalProgram (executablePath, parameters)
-}
 
+		logEverywhere ('START PROGRAM ' + executablePath)
+		logEverywhere ('Parameters = ' + parameters)
+		child(executablePath, parameters);
+		logEverywhere('Program Finished !!!')
+}
 
 // create a main window for the application
 function mainProgram() {
@@ -68,7 +60,7 @@ function mainProgram() {
 			app.setAsDefaultProtocolClient('visbo-connect')
 		  }
 	}
-	else {
+	else { //This is a call for starting an external program
 		if (argv[2] === undefined) {
 			// this the call from a web site
 			logEverywhere('called from web site')
@@ -80,16 +72,17 @@ function mainProgram() {
 			parameterValue = argv[2]
 		
 		}
+	// start the program with parameters given by the web site or the test run
 	startExternalProgramWithParameters (parameterValue)
 	}
-	app.quit()
+	// flush lof files and quit application
+	log4js.shutdown(function() { app.quit() })
 }
 
 
 // This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
+// initialization
 // Some APIs can only be used after this event occurs.
 // REWORK use => function
-logEverywhere(' ----------------- wait for app.on ready NEW --------------- ')
+logEverywhere(' ----------------- Wait for app.on ready--------------- ')
 app.on('ready', mainProgram)
-
