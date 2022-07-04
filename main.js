@@ -4,7 +4,7 @@ const { app } = require('electron')
 const child = require('child_process').execFileSync;
 const executablePath = 'C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE';
 // const executablePath ="C:\\GitHub\\electron-deep-linking-mac-win\\startme.bat"
-const parameters = ['C:\\Visbo\\Software\\Projectboard.xlsx'];
+const parameters = ['C:\\Visbo\\VISBO SPE\\Visbo Project Edit.xlsx'];
 
 // logger initialize
 var log4js = require("log4js");
@@ -28,17 +28,19 @@ function getParameter (myParameter) {
 
 	// only the parameters after the ? are important for SPE
 	const afterQuestionMarkString = myParameter.split("?")[1];
-	logEverywhere ("afterQuestionMarkStringRight =  " + afterQuestionMarkString)
+	logEverywhere ("Received from WebSite after the ? character =  " + afterQuestionMarkString)
 
-	// rework code (special for spe)
-	parameterForExcelAddin = '/e/"' + afterQuestionMarkString + '"'
+	// clean strings from ? and substitute with / (special for spe)
+	// SPE needs leading /e and final / at the end
+	cleanString = afterQuestionMarkString.replace (/\&/g, "/")
+	parameterForExcelAddin = '/e/' + cleanString + '/'
 	return (parameterForExcelAddin)
 }
 
 // Start Program with parameters received from the web
 function startExternalProgramWithParameters (parameterValue) {
 		let speParameter = getParameter(parameterValue)
-		logEverywhere ('speParameter = ' + speParameter)
+		logEverywhere ('Parameter for SPE = ' + speParameter)
 		parameters.push(speParameter)
 
 		logEverywhere ('START PROGRAM ' + executablePath)
