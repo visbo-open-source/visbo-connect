@@ -1,4 +1,5 @@
 const { app } = require('electron')
+const path = require('path')
 
 // define value for external program calls
 const child = require('child_process').execFileSync;
@@ -8,8 +9,12 @@ const parameters = ['C:\\Visbo\\VISBO SPE\\Visbo Project Edit.xlsx'];
 
 // logger initialize
 var log4js = require("log4js");
+let mydate = new Date();
+let logFilename = "/logs/" + mydate.getFullYear() + "-" + mydate.getMonth() + "-" + mydate.getDate() + "-" + "vconnect.log";
+const logFile = path.join(__dirname, logFilename)
+console.log ('logfile = ', logFile)
 log4js.configure({
-	appenders: { everything: { type: "file", filename: "C:\\GitHub\\visbo-connect\\mydebug.log" } },
+	appenders: { everything: { type: "file", filename: logFile  } },
 	categories: { default: { appenders: ["everything"], level: "debug" } }
   });
 const logger = log4js.getLogger();
