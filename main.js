@@ -1,17 +1,17 @@
 const { app } = require('electron')
-const path = require('path')
-
+const fs = require ('fs')
 // define value for external program calls
 const child = require('child_process').execFileSync;
-const executablePath = 'C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE';
-// const executablePath ="C:\\GitHub\\electron-deep-linking-mac-win\\startme.bat"
-const parameters = ['C:\\Visbo\\VISBO SPE\\Visbo Project Edit.xlsx'];
 
-// logger initialize
+// local folder the program (for logs or config files)
+const vcnLocalFolder = process.env.APPDATA + '\\visbo-connect'
+
+// ----------------- logger initialize -----------------------------
 var log4js = require("log4js");
-let mydate = new Date();
-let logFilename = "/logs/" + mydate.getFullYear() + "-" + mydate.getMonth() + "-" + mydate.getDate() + "-" + "vconnect.log";
-const logFile = path.join(__dirname, logFilename)
+// let mydate = new Date();
+// let logFilename = "\logs\\" + mydate.getFullYear() + "-" + mydate.getMonth() + "-" + mydate.getDate() + "-" + "vconnect.log";
+const logFilename = "visboconnect.log"
+const logFile = vcnLocalFolder + "\\logs\\" + logFilename
 console.log ('logfile = ', logFile)
 log4js.configure({
 	appenders: { everything: { type: "file", filename: logFile  } },
@@ -25,8 +25,27 @@ function logEverywhere(s) {
 	logger.debug(s)
 }
 
-// ---------------- FUNCTIONS ----------------
+// ------------------ READ Configuration values ------------------------
+// default values for config values
+let executablePath = 'C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE';
+let parameters = ['C:\\Visbo\\VISBO SPE\\Visbo Project Edit.xlsx'];
 
+// read config file if it exists
+vcnConfigFile = vcnLocalFolder + '\\' + 'vcn_config.json'
+logEverywhere ('check config file = ' + vcnConfigFile)
+if (fs.existsSync(vcnConfigFile)) {
+	rawJSON = fs.readFileSync(vcnConfigFile)
+	configData = JSON.parse (rawJSON)
+	executablePath = configData["excelExe"]
+	parameters = [configData["speSheet"]]
+}
+else {
+	logEverywhere ("config file does not exist, use defaults. ConfigFile = " + vcnConfigFile)
+}
+logEverywhere ('executablePath = ' + executablePath)
+logEverywhere ('speSheet = ' + parameters[0])
+
+// ---------------- FUNCTIONS ----------------
 // make parameter usage for simple edit
 function getParameter (myParameter) {
 	if (myParameter === undefined) {return undefined}
@@ -77,7 +96,6 @@ function mainProgram() {
 			// This is a test call npm start (First two parameters are electron and .)
 			logEverywhere('called via npm for test')
 			parameterValue = argv[2]
-		
 		}
 	// start the program with parameters given by the web site or the test run
 	startExternalProgramWithParameters (parameterValue)
