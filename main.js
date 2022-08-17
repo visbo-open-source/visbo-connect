@@ -4,17 +4,21 @@ const fs = require ('fs')
 const child = require('child_process').execFileSync;
 
 // local folder the program (for logs or config files)
-const vcnLocalFolder = process.env.APPDATA + '\\visbo-connect'
+const vcnLocalFolder = process.env.APPDATA + '\\VISBO\\visbo-connect'
 
 // ----------------- logger initialize -----------------------------
 var log4js = require("log4js");
-// let mydate = new Date();
-// let logFilename = "\logs\\" + mydate.getFullYear() + "-" + mydate.getMonth() + "-" + mydate.getDate() + "-" + "vconnect.log";
 const logFilename = "visboconnect.log"
 const logFile = vcnLocalFolder + "\\logs\\" + logFilename
-console.log ('logfile = ', logFile)
+// console.log ('logfile = ', logFile)
+/*
 log4js.configure({
 	appenders: { everything: { type: "file", filename: logFile  } },
+	categories: { default: { appenders: ["everything"], level: "debug" } }
+  });
+*/
+log4js.configure({
+	appenders: { everything: { type: "dateFile", filename: logFile, pattern: "yyyy-MM-dd", fileNameSep: "_", keepFileExt: true, numBackups: 3  } },
 	categories: { default: { appenders: ["everything"], level: "debug" } }
   });
 const logger = log4js.getLogger();
@@ -25,9 +29,12 @@ function logEverywhere(s) {
 	logger.debug(s)
 }
 
+logEverywhere ('---- NEW Program Start ----')
+logEverywhere ('logfile = ' + logFile)
 // ------------------ READ Configuration values ------------------------
 // default values for config values
 let executablePath = 'C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE';
+// let executablePath = 'start';
 let parameters = ['C:\\Visbo\\VISBO SPE\\Visbo Project Edit.xlsx'];
 
 // read config file if it exists
@@ -70,7 +77,7 @@ function startExternalProgramWithParameters (parameterValue) {
 		logEverywhere ('START PROGRAM ' + executablePath)
 		logEverywhere ('Parameters = ' + parameters)
 		child(executablePath, parameters);
-		logEverywhere('Program Finished !!!')
+		logEverywhere('---- Program Finished !!! ----')
 }
 
 // create a main window for the application
@@ -109,5 +116,5 @@ function mainProgram() {
 // initialization
 // Some APIs can only be used after this event occurs.
 // REWORK use => function
-logEverywhere(' ----------------- Wait for app.on ready--------------- ')
+logEverywhere('- Wait for app.on ready -')
 app.on('ready', mainProgram)

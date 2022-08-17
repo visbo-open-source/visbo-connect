@@ -1,0 +1,3 @@
+get-childitem "C:\Program Files*\Microsoft Office" -recurse | where {$_.Name -eq "excel.exe"} | select -first 1 | % { $_.FullName }
+
+start GDS_L3_BAP_CAN_HID_2022_pivot.xlsx
