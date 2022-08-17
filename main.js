@@ -10,13 +10,6 @@ const vcnLocalFolder = process.env.APPDATA + '\\VISBO\\visbo-connect'
 var log4js = require("log4js");
 const logFilename = "visboconnect.log"
 const logFile = vcnLocalFolder + "\\logs\\" + logFilename
-// console.log ('logfile = ', logFile)
-/*
-log4js.configure({
-	appenders: { everything: { type: "file", filename: logFile  } },
-	categories: { default: { appenders: ["everything"], level: "debug" } }
-  });
-*/
 log4js.configure({
 	appenders: { everything: { type: "dateFile", filename: logFile, pattern: "yyyy-MM-dd", fileNameSep: "_", keepFileExt: true, numBackups: 3  } },
 	categories: { default: { appenders: ["everything"], level: "debug" } }
@@ -31,6 +24,14 @@ function logEverywhere(s) {
 
 logEverywhere ('---- NEW Program Start ----')
 logEverywhere ('logfile = ' + logFile)
+
+// Handle unexpected erros
+process.on('uncaughtException', function (error) {
+	logEverywhere ('*** FATAL ERROR = ' + error);
+	logEverywhere ('*** Program Finished');
+	app.exit(1);
+})
+
 // ------------------ READ Configuration values ------------------------
 // default values for config values
 let executablePath = 'C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE';
@@ -112,9 +113,7 @@ function mainProgram() {
 }
 
 
-// This method will be called when Electron has finished
-// initialization
+// This method will be called when Electron has finished initialization
 // Some APIs can only be used after this event occurs.
-// REWORK use => function
 logEverywhere('- Wait for app.on ready -')
 app.on('ready', mainProgram)
