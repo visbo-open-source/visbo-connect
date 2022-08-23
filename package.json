@@ -1,6 +1,6 @@
 {
   "name": "visbo-connect",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "VISBO application to start excel addins on Windows",
   "main": "main.js",
   "scripts": {
