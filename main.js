@@ -108,7 +108,7 @@ function mainProgram() {
 	// start the program with parameters given by the web site or the test run
 	startExternalProgramWithParameters (parameterValue)
 	}
-	// flush lof files and quit application
+	// flush log files and quit application
 	log4js.shutdown(function() { app.quit() })
 }
 
