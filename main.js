@@ -25,7 +25,7 @@ function logEverywhere(s) {
 logEverywhere ('---- NEW Program Start ----')
 logEverywhere ('logfile = ' + logFile)
 
-// Handle unexpected erros
+// Handle unexpected errors
 process.on('uncaughtException', function (error) {
 	logEverywhere ('*** FATAL ERROR = ' + error);
 	logEverywhere ('*** Program Finished');

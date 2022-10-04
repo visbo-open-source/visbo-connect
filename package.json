@@ -14,7 +14,7 @@
     "win32",
     "VISBO"
   ],
-  "author": "UliP",
+  "author": "Visbo GmbH",
   "devDependencies": {
     "electron": "^19.0.2",
     "electron-builder": "^23.0.3"
