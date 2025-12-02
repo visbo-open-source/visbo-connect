@@ -29,7 +29,7 @@ The json file has two parameters defined. excelExe and speSheet. The example con
 
 Building, Test and Installation:
 
-The solution is located in the VISBO GitHub under https://bitbucket.org/visboAtlassian/visbo-connect/src/development/
+The solution is located in the VISBO GitHub under https://github.com/visbo-open-source/visbo-connect
 It contains all the components for the creation of an setup.exe build for Visbo Connect.
 
 After the cloning of the GitHub solution to your local folder the program can be started for testing with a call like this:
@@ -50,7 +50,5 @@ The name, version and icon of the executable can be configured in the file packa
 https://ourcodeworld.com/articles/read/927/how-to-create-a-msi-installer-in-windows-for-an-electron-framework-application)
 
 After the sucessful installation the program can be called from the VISBO web site.
-The call and configuration of the web site is documented here:
-https://visbogmbh.atlassian.net/wiki/spaces/VS/pages/2791538689/Installation+and+Configuration+of+VISBO+Connect+for+Editing+Projects+with+Projects+started+out+of+the+WebUI
 
 visbo-connect can be uninstalled with the normal windows dialogs.
